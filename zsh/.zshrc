@@ -75,6 +75,13 @@ plugins=(git zsh-nvm zsh-autosuggestions zsh-completions)
 
 source $ZSH/oh-my-zsh.sh
 
+source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+if [ -f ~/.truepill-aliases ]; then
+    source ~/.truepill-aliases
+else
+    print "404: ~/.truepill-aliases not found."
+fi
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -102,6 +109,7 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias kubectl="kubecolor"
 PROMPT='
 %{$fg_bold[green]%}%~%{$reset_color%}$(git_prompt_info) ⌚ %{$fg_bold[red]%}%t%{$reset_color%}
 $ '

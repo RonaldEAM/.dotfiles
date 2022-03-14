@@ -20,7 +20,7 @@ set sidescrolloff=10
 set nowrap
 set clipboard=unnamed
 set list
-set listchars=tab:-->,space:·,lead:·,trail:·
+set listchars=tab:-->,multispace:·
 
 " User interface options
 set laststatus=2
@@ -66,9 +66,9 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'karb94/neoscroll.nvim'
 Plug 'tpope/vim-sleuth'
 " Fuzzy finder
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
 Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'ThePrimeagen/harpoon'
 " TDD
 Plug 'vim-test/vim-test'
@@ -81,26 +81,27 @@ call plug#end()
 " ---- Plugins Settings ----
 
 " onedark theme
-let g:onedark_style='warmer'
 colorscheme onedark
 " vim-airline
 let g:airline_theme='onedark'
 let g:airline_powerline_fonts=1
 let g:airline#extensions#hunks#non_zero_only=1
 " nvim-tree
-let g:nvim_tree_quit_on_open=1
 let g:nvim_tree_highlight_opened_files=1
 lua <<EOF
 require'nvim-tree'.setup {
-  disable_netrw       = true,
-  hijack_netrw        = true,
-  open_on_setup       = false,
-  ignore_ft_on_setup  = {},
-  auto_close          = false,
-  open_on_tab         = false,
-  hijack_cursor       = false,
-  update_cwd          = false,
-  update_to_buf_dir   = {
+  disable_netrw        = false,
+  hijack_netrw         = true,
+  open_on_setup        = false,
+  ignore_buffer_on_setup = false,
+  ignore_ft_on_setup   = {},
+  auto_close           = false,
+  auto_reload_on_write = true,
+  open_on_tab          = false,
+  hijack_cursor        = false,
+  update_cwd           = false,
+  hijack_unnamed_buffer_when_opening = false,
+  hijack_directories   = {
     enable = true,
     auto_open = true,
   },
@@ -114,7 +115,7 @@ require'nvim-tree'.setup {
     }
   },
   update_focused_file = {
-    enable      = true,
+    enable      = false,
     update_cwd  = false,
     ignore_list = {}
   },
@@ -123,20 +124,58 @@ require'nvim-tree'.setup {
     args = {}
   },
   filters = {
-    dotfiles = false,
+    dotfiles = true,
     custom = {}
   },
+  git = {
+    enable = true,
+    ignore = false,
+    timeout = 500,
+  },
   view = {
-    width = 50,
+    width = 45,
     height = 30,
     hide_root_folder = false,
     side = 'left',
-    auto_resize = false,
+    preserve_window_proportions = false,
     mappings = {
       custom_only = false,
       list = {}
+    },
+    number = false,
+    relativenumber = true,
+    signcolumn = "yes"
+  },
+  trash = {
+    cmd = "trash",
+    require_confirm = true
+  },
+  actions = {
+    change_dir = {
+      enable = true,
+      global = false,
+    },
+    open_file = {
+      quit_on_open = true,
+      resize_window = false,
+      window_picker = {
+        enable = true,
+        chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
+        exclude = {
+          filetype = { "notify", "packer", "qf", "diff", "fugitive", "fugitiveblame", },
+          buftype  = { "nofile", "terminal", "help", },
+        }
+      }
     }
-  }
+  },
+  log = {
+    enable = false,
+    types = {
+      all = false,
+      config = false,
+      git = false,
+    },
+  },
 }
 EOF
 " vim-gitgutter
@@ -172,6 +211,14 @@ let g:blamer_delay=500
 let g:blamer_show_in_insert_modes=0
 " let g:blamer_show_in_visual_modes=0
 
+" Telescope
+lua << EOF
+require('telescope').setup{
+  -- ...
+}
+require('telescope').load_extension('fzf')
+EOF
+
 " ---- Key Mappings ----
 let mapleader=' '
 
@@ -201,10 +248,6 @@ nmap <Leader>ga :diffget //2<CR>
 nmap <Leader>gb :diffget //3<CR>
 nnoremap <Leader>gc :GBranches<CR>
 
-" fzf
-nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<CR>"
-nnoremap <Leader>r :Rg<CR>
-
 " vim-test
 nmap <Leader>tn :TestNearest<CR>
 nmap <Leader>tf :TestFile --runInBand<CR>
@@ -219,6 +262,13 @@ nnoremap <Leader>m1 :lua require("harpoon.ui").nav_file(1)<CR>
 nnoremap <Leader>m2 :lua require("harpoon.ui").nav_file(2)<CR>
 nnoremap <Leader>m3 :lua require("harpoon.ui").nav_file(3)<CR>
 nnoremap <Leader>m4 :lua require("harpoon.ui").nav_file(4)<CR>
+
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+nnoremap <leader>tgs <cmd>lua require('telescope.builtin').git_status()<cr>
 
 " ---------- CoC ---------- 
 "
@@ -301,8 +351,8 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+" xmap <leader>f  <Plug>(coc-format-selected)
+" nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
@@ -314,24 +364,24 @@ augroup end
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
+" xmap <leader>a  <Plug>(coc-codeaction-selected)
+" nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
+" nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
+" nmap <leader>qf  <Plug>(coc-fix-current)
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
+" xmap if <Plug>(coc-funcobj-i)
+" omap if <Plug>(coc-funcobj-i)
+" xmap af <Plug>(coc-funcobj-a)
+" omap af <Plug>(coc-funcobj-a)
+" xmap ic <Plug>(coc-classobj-i)
+" omap ic <Plug>(coc-classobj-i)
+" xmap ac <Plug>(coc-classobj-a)
+" omap ac <Plug>(coc-classobj-a)
 
 " Remap <C-f> and <C-b> for scroll float windows/popups.
 if has('nvim-0.4.0') || has('patch-8.2.0750')
@@ -364,19 +414,19 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Mappings for CoCList
 " Show all diagnostics.
-nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+" nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions.
-nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
 " Show commands.
-nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document.
-nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols.
-nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
 " nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
 " nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
-nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+" nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
