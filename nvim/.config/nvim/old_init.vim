@@ -35,6 +35,7 @@ set showcmd
 set showmatch
 set signcolumn=yes
 highlight clear SignColumn
+set termguicolors
 
 " File options
 set noswf
@@ -54,6 +55,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'APZelos/blamer.nvim'
+Plug 'whiteinge/diffconflicts'
 " Directories
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
@@ -75,12 +77,49 @@ Plug 'vim-test/vim-test'
 Plug 'tpope/vim-dispatch'
 Plug 'radenling/vim-dispatch-neovim'
 
+" Golang tools
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
 call plug#end()
 
 
 " ---- Plugins Settings ----
 
 " onedark theme
+lua <<EOF
+require('onedark').setup  {
+    -- Main options --
+    style = 'dark', -- Default theme style. Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer' and 'light'
+    transparent = true,  -- Show/hide background
+    term_colors = true, -- Change terminal color as per the selected theme style
+    ending_tildes = false, -- Show the end-of-buffer tildes. By default they are hidden
+    -- toggle theme style ---
+    toggle_style_key = '<leader>ts', -- Default keybinding to toggle
+    toggle_style_list = {'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'}, -- List of styles to toggle between
+
+    -- Change code style ---
+    -- Options are italic, bold, underline, none
+    -- You can configure multiple style with comma seperated, For e.g., keywords = 'italic,bold'
+    code_style = {
+        comments = 'italic',
+        keywords = 'none',
+        functions = 'none',
+        strings = 'none',
+        variables = 'none'
+    },
+
+    -- Custom Highlights --
+    colors = {}, -- Override default colors
+    highlights = {}, -- Override highlight groups
+
+    -- Plugins Config --
+    diagnostics = {
+        darker = true, -- darker colors for diagnostic
+        undercurl = true,   -- use undercurl instead of underline for diagnostics
+        background = true,    -- use background color for virtual text
+    },
+}
+EOF
 colorscheme onedark
 " vim-airline
 let g:airline_theme='onedark'
@@ -115,7 +154,7 @@ require'nvim-tree'.setup {
     }
   },
   update_focused_file = {
-    enable      = false,
+    enable      = true,
     update_cwd  = false,
     ignore_list = {}
   },
@@ -219,6 +258,12 @@ require('telescope').setup{
 require('telescope').load_extension('fzf')
 EOF
 
+" Golang
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+
 " ---- Key Mappings ----
 let mapleader=' '
 
@@ -250,8 +295,8 @@ nnoremap <Leader>gc :GBranches<CR>
 
 " vim-test
 nmap <Leader>tn :TestNearest<CR>
-nmap <Leader>tf :TestFile --runInBand<CR>
-nmap <Leader>ts :TestSuite --runInBand<CR>
+nmap <Leader>tf :TestFile<CR>
+nmap <Leader>ts :TestSuite<CR>
 " nmap <Leader>tl :TestLast<CR>
 " nmap <Leader>tg :TestVisit<CR>
 
@@ -272,7 +317,7 @@ nnoremap <leader>tgs <cmd>lua require('telescope.builtin').git_status()<cr>
 
 " ---------- CoC ---------- 
 "
-let g:coc_global_extensions = ['coc-tsserver', 'coc-eslint', 'coc-json', 'coc-prettier', 'coc-css', 'coc-go']
+let g:coc_global_extensions = ['coc-tsserver', 'coc-eslint', 'coc-json', 'coc-prettier', 'coc-css', 'coc-html']
 " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
 " unicode characters in the file autoload/float.vim
 set encoding=utf-8

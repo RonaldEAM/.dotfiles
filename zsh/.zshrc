@@ -117,3 +117,6 @@ $ '
 export XDG_CONFIG_HOME="$HOME/.config"
 
 export PATH="/Users/ronaldarias/Library/Python/2.7/bin:${PATH}"
+
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
