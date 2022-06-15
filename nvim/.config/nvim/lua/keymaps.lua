@@ -30,19 +30,8 @@ nmap('Y', 'y$')
 nmap('<leader>nt', ':NvimTreeToggle<CR>')
 nmap('<leader>r', ':NvimTreeRefresh<CR>')
 
--- [[ gitgutter ]]
--- nmap ]h <Plug>(GitGutterNextHunk)
--- nmap [h <Plug>(GitGutterPrevHunk)
-
 -- [[ fugitive ]]
 nmap('<leader>gs', ':G<CR>')
-
--- " vim-test
--- nmap <Leader>tn :TestNearest<CR>
--- nmap <Leader>tf :TestFile<CR>
--- nmap <Leader>ts :TestSuite<CR>
--- " nmap <Leader>tl :TestLast<CR>
--- " nmap <Leader>tg :TestVisit<CR>
 
 -- [[ harpoon ]]
 nmap('<leader>mf', function() return require("harpoon.mark").add_file() end)
@@ -58,6 +47,21 @@ nmap('<leader>fg',  function() return require("telescope.builtin").live_grep() e
 nmap('<leader>fb',  function() return require("telescope.builtin").buffers() end)
 nmap('<leader>fh',  function() return require("telescope.builtin").help_tags() end)
 nmap('<leader>tgs', function() return require("telescope.builtin").git_status() end)
+nmap('<leader>ch', function() return require("telescope.builtin").command_history() end)
 nmap('gr', ':Telescope lsp_references<CR>')
 nmap('gd', ':Telescope lsp_definitions<CR>')
 nmap('<leader>gh', ':Telescope git_commits<CR>')
+
+-- [[ Debugger ]]
+nmap('<leader>dc',  function() return require("dap").continue() end)
+nmap('<leader>db',  function() return require("dap").toggle_breakpoint() end)
+nmap('<leader>dn',  function() return require("dap").step_over() end)
+nmap('<leader>dp',  function() return require("dap").step_back() end)
+nmap('<leader>di',  function() return require("dap").step_into() end)
+nmap('<leader>do',  function() return require("dap").step_out() end)
+nmap('<leader>dB',  function() return require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: ")) end)
+nmap('<leader>d0',  function() return require("dap").clear_breakpoints() end)
+nmap('<leader>dr',  function() return require("dap").repl.open() end)
+nmap('<leader>dt',  function() return require("dap").terminate() end)
+nmap('<leader>dui', function() return require("dapui").toggle() end)
+nmap('<leader>de',  function() return require("dapui").eval() end)

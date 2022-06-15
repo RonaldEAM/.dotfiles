@@ -25,7 +25,7 @@ local on_attach = function(client, bufnr)
   -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>fo', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
   if client.resolved_capabilities.document_formatting then
@@ -35,12 +35,12 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'tsserver', 'html' }
+local servers = { 'tsserver', 'html', 'gopls' }
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 for _, lsp in pairs(servers) do
   lspconfig[lsp].setup {
     on_attach = function(client, bufnr)
-      if lsp == 'tsserver' then
+      if lsp == 'tsserver' or lsp == 'html' then
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.document_range_formatting = false
       end
@@ -52,9 +52,9 @@ end
 
 null_ls.setup({
   sources = {
-    null_ls.builtins.diagnostics.eslint,
-    null_ls.builtins.code_actions.eslint,
-    null_ls.builtins.formatting.prettier,
+    null_ls.builtins.diagnostics.eslint_d,
+    null_ls.builtins.code_actions.eslint_d,
+    null_ls.builtins.formatting.prettierd,
   },
   on_attach = on_attach,
 })

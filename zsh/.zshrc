@@ -109,6 +109,7 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias nn="nvim ."
 alias kubectl="kubecolor"
 PROMPT='
 %{$fg_bold[green]%}%~%{$reset_color%}$(git_prompt_info) ⌚ %{$fg_bold[red]%}%t%{$reset_color%}

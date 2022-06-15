@@ -4,7 +4,7 @@ require('opts')
 require('plugins')
 require('lsp')
 require('setup.nvim-cmp')
-require('setup.luasnip')
+require('setup.vsnip')
 
 -- [[ Plugins Settings ]]
 require('setup.theme')
@@ -16,5 +16,6 @@ require('setup.nvim-tree')
 require('setup.neoscroll')
 require('setup.treesitter')
 require('setup.telescope')
+require('setup.dap')
 
 require('keymaps')

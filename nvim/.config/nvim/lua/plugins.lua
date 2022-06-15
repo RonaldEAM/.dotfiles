@@ -12,8 +12,9 @@ return require('packer').startup(function()
   use 'hrsh7th/cmp-buffer'
   use 'hrsh7th/cmp-path'
   use 'hrsh7th/nvim-cmp'
-  use 'L3MON4D3/LuaSnip'
-  use 'saadparwaiz1/cmp_luasnip'
+  use 'hrsh7th/vim-vsnip'
+  use 'hrsh7th/cmp-vsnip'
+  use 'onsails/lspkind.nvim'
 
   -- [[ Themes ]]
   use 'sainnhe/everforest'
@@ -61,4 +62,10 @@ return require('packer').startup(function()
     run = 'make'
   }
   use 'ThePrimeagen/harpoon'
+  -- [[ Debug ]]
+  use 'mfussenegger/nvim-dap'
+  use 'leoluz/nvim-dap-go'
+  use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
+  use 'theHamsta/nvim-dap-virtual-text'
+
 end)
