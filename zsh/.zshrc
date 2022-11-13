@@ -71,7 +71,7 @@ export DISABLE_AUTO_TITLE="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-nvm zsh-autosuggestions zsh-completions)
+plugins=(git zsh-autosuggestions zsh-completions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -116,8 +116,9 @@ PROMPT='
 $ '
 
 export XDG_CONFIG_HOME="$HOME/.config"
+export GOPATH="$HOME/go"
+export VOLTA_HOME="$HOME/.volta"
 
-export PATH="/Users/ronaldarias/Library/Python/2.7/bin:${PATH}"
-
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
+export PATH="$GOPATH/bin:$PATH"
+export PATH="$VOLTA_HOME/bin:$PATH"
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"

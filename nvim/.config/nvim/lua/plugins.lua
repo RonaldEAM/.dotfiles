@@ -17,8 +17,6 @@ return require('packer').startup(function()
   use 'onsails/lspkind.nvim'
   use 'simrat39/symbols-outline.nvim'
 
-  use 'github/copilot.vim'
-
   -- [[ Themes ]]
   -- use 'sainnhe/everforest'
   use 'gruvbox-community/gruvbox'
