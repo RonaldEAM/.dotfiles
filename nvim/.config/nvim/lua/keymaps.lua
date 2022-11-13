@@ -32,6 +32,8 @@ nmap('<leader>r', ':NvimTreeRefresh<CR>')
 
 -- [[ fugitive ]]
 nmap('<leader>gs', ':G<CR>')
+nmap('<leader>gl', ':0Gclog<CR>')
+nmap('<leader>ge', ':Gedit<CR>')
 
 -- [[ harpoon ]]
 nmap('<leader>mf', function() return require("harpoon.mark").add_file() end)
@@ -41,7 +43,7 @@ nmap('<leader>m2', function() return require("harpoon.ui").nav_file(2) end)
 nmap('<leader>m3', function() return require("harpoon.ui").nav_file(3) end)
 nmap('<leader>m4', function() return require("harpoon.ui").nav_file(4) end)
 
--- [[ Find files using Telescope command-line sugar. ]]
+-- [[ Telescope ]]
 nmap('<leader>ff',  function() return require("telescope.builtin").find_files() end)
 nmap('<leader>fg',  function() return require("telescope.builtin").live_grep() end)
 nmap('<leader>fb',  function() return require("telescope.builtin").buffers() end)
@@ -51,6 +53,7 @@ nmap('<leader>ch', function() return require("telescope.builtin").command_histor
 nmap('gr', ':Telescope lsp_references<CR>')
 nmap('gd', ':Telescope lsp_definitions<CR>')
 nmap('<leader>gh', ':Telescope git_commits<CR>')
+nmap('<leader>fid', function() return require("telescope.builtin").live_grep({search_dirs = {vim.fn.input("Directory to search: ")}}) end)
 
 -- [[ Debugger ]]
 nmap('<leader>dc',  function() return require("dap").continue() end)
@@ -65,3 +68,22 @@ nmap('<leader>dr',  function() return require("dap").repl.open() end)
 nmap('<leader>dt',  function() return require("dap").terminate() end)
 nmap('<leader>dui', function() return require("dapui").toggle() end)
 nmap('<leader>de',  function() return require("dapui").eval() end)
+
+-- [[SymbolsOutline]]
+nmap('<leader>so', '<cmd>SymbolsOutline<CR>')
+
+-- [[ Apply macros in multiple lines ]]
+vim.cmd([[
+  xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
+
+  function! ExecuteMacroOverVisualRange()
+    echo "@".getcmdline()
+    execute ":'<,'>normal @".nr2char(getchar())
+  endfunction
+]])
+
+
+-- [[ Rest Nvim ]]
+nmap('<leader>re', '<Plug>RestNvim')
+nmap('<leader>rp', '<Plug>RestNvimPreview')
+nmap('<leader>rl', '<Plug>RestNvimLast')

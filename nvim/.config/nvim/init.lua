@@ -17,5 +17,7 @@ require('setup.neoscroll')
 require('setup.treesitter')
 require('setup.telescope')
 require('setup.dap')
+require('setup.blamer')
+require('setup.rest-nvim')
 
 require('keymaps')

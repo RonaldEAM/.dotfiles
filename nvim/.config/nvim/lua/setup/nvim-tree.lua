@@ -1,6 +1,6 @@
 require'nvim-tree'.setup {
   auto_reload_on_write = true,
-  create_in_closed_folder = true,
+  create_in_closed_folder = false,
   disable_netrw = false,
   hijack_cursor = false,
   hijack_netrw = true,
@@ -16,7 +16,6 @@ require'nvim-tree'.setup {
   view = {
     adaptive_size = true,
     width = 50,
-    height = 50,
     hide_root_folder = false,
     side = "left",
     preserve_window_proportions = false,

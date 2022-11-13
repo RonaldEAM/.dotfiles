@@ -15,9 +15,13 @@ return require('packer').startup(function()
   use 'hrsh7th/vim-vsnip'
   use 'hrsh7th/cmp-vsnip'
   use 'onsails/lspkind.nvim'
+  use 'simrat39/symbols-outline.nvim'
+
+  use 'github/copilot.vim'
 
   -- [[ Themes ]]
-  use 'sainnhe/everforest'
+  -- use 'sainnhe/everforest'
+  use 'gruvbox-community/gruvbox'
 
   -- [[ Status bar ]]
   use 'j-hui/fidget.nvim'
@@ -67,5 +71,11 @@ return require('packer').startup(function()
   use 'leoluz/nvim-dap-go'
   use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
   use 'theHamsta/nvim-dap-virtual-text'
+
+  -- [[ Apps ]]
+  use {
+    "NTBBloodbath/rest.nvim",
+    requires = { "nvim-lua/plenary.nvim" },
+  }
 
 end)
