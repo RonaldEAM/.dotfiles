@@ -78,8 +78,6 @@ source $ZSH/oh-my-zsh.sh
 source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 if [ -f ~/.truepill-aliases ]; then
     source ~/.truepill-aliases
-else
-    print "404: ~/.truepill-aliases not found."
 fi
 
 # User configuration
@@ -110,10 +108,15 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias nn="nvim ."
-alias kubectl="kubecolor"
+alias todo="nvim ~/todo.txt"
 PROMPT='
 %{$fg_bold[green]%}%~%{$reset_color%}$(git_prompt_info) ⌚ %{$fg_bold[red]%}%t%{$reset_color%}
 $ '
+
+if [ -f ~/.npm_token ]; then
+    source ~/.npm_token
+fi
+
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export GOPATH="$HOME/go"

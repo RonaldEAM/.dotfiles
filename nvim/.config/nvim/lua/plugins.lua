@@ -54,6 +54,10 @@ return require('packer').startup(function()
   use 'p00f/nvim-ts-rainbow'
   use 'karb94/neoscroll.nvim'
   use 'tpope/vim-sleuth'
+  use({
+      "iamcco/markdown-preview.nvim",
+      run = function() vim.fn["mkdp#util#install"]() end,
+  })
   -- [[ Fuzzy finder ]]
   use {
     'nvim-telescope/telescope.nvim',

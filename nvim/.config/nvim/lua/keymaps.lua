@@ -87,3 +87,6 @@ vim.cmd([[
 nmap('<leader>re', '<Plug>RestNvim')
 nmap('<leader>rp', '<Plug>RestNvimPreview')
 nmap('<leader>rl', '<Plug>RestNvimLast')
+
+-- [[ Markdown ]]
+nmap('<leader>md', ':MarkdownPreviewToggle<CR>')
