@@ -75,11 +75,6 @@ plugins=(git zsh-autosuggestions zsh-completions)
 
 source $ZSH/oh-my-zsh.sh
 
-# source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
-if [ -f ~/.truepill-aliases ]; then
-    source ~/.truepill-aliases
-fi
-
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -108,7 +103,8 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias nn="nvim ."
-alias todo="nvim ~/todo.txt"
+alias nt="exa -alh --icons"
+
 PROMPT='
 %{$fg_bold[green]%}%~%{$reset_color%}$(git_prompt_info) ⌚ %{$fg_bold[red]%}%t%{$reset_color%}
 $ '
@@ -120,16 +116,15 @@ fi
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export GOPATH="$HOME/go"
-export VOLTA_HOME="$HOME/.volta"
 
 export PATH="$GOPATH/bin:$PATH"
-export PATH="$VOLTA_HOME/bin:$PATH"
+export PATH="$HOME/.docker/bin:$PATH"
 
 # pyenv setup to manage python versions
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/ronaldeam/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

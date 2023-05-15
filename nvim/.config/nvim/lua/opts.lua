@@ -31,6 +31,7 @@ opt.showcmd = true
 opt.signcolumn = 'yes'
 -- highlight clear SignColumn -- what was this for? vim-gitgutter? column same color?
 opt.termguicolors = true -- enable true colors
+opt.mouse = ''
 
 -- [[ File options ]]
 opt.swapfile = false

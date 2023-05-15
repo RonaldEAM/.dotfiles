@@ -33,9 +33,11 @@ local on_attach = function(client, bufnr)
   end
 end
 
+require("lspconfig.configs").vtsls = require("vtsls").lspconfig
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'tsserver', 'html', 'gopls' }
+local servers = { 'vtsls', 'html', 'gopls' }
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 for _, lsp in pairs(servers) do
   lspconfig[lsp].setup {
@@ -52,9 +54,9 @@ end
 
 null_ls.setup({
   sources = {
-    null_ls.builtins.diagnostics.eslint,
-    null_ls.builtins.code_actions.eslint,
-    null_ls.builtins.formatting.prettier,
+    null_ls.builtins.diagnostics.eslint_d,
+    null_ls.builtins.code_actions.eslint_d,
+    null_ls.builtins.formatting.prettierd,
   },
   on_attach = on_attach,
 })

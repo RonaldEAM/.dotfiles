@@ -19,5 +19,6 @@ require('setup.telescope')
 require('setup.dap')
 require('setup.blamer')
 require('setup.rest-nvim')
+require('setup.harpoon')
 
 require('keymaps')

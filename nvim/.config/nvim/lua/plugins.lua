@@ -17,6 +17,7 @@ return require('packer').startup(function()
 
   use 'neovim/nvim-lspconfig'
   use 'jose-elias-alvarez/null-ls.nvim'
+  use 'yioneko/nvim-vtsls'
   use 'hrsh7th/cmp-nvim-lsp'
   use 'hrsh7th/cmp-buffer'
   use 'hrsh7th/cmp-path'
@@ -42,6 +43,7 @@ return require('packer').startup(function()
   use 'lewis6991/gitsigns.nvim'
   use 'APZelos/blamer.nvim'
   use 'whiteinge/diffconflicts'
+  use "almo7aya/openingh.nvim"
 
   -- [[ Directories ]]
   use 'kyazdani42/nvim-web-devicons'
@@ -70,19 +72,35 @@ return require('packer').startup(function()
       "iamcco/markdown-preview.nvim",
       run = function() vim.fn["mkdp#util#install"]() end,
   })
+
   -- [[ Fuzzy finder ]]
   use {
     'nvim-telescope/telescope.nvim',
-    requires = { {'nvim-lua/plenary.nvim'} }
+    requires = {
+      { 'nvim-lua/plenary.nvim' },
+      { 'nvim-telescope/telescope-live-grep-args.nvim' },
+    }
   }
   use {
     'nvim-telescope/telescope-fzf-native.nvim',
     run = 'make'
   }
   use 'ThePrimeagen/harpoon'
+  use 'nvim-telescope/telescope-ui-select.nvim'
+
   -- [[ Debug ]]
   use 'mfussenegger/nvim-dap'
   use 'leoluz/nvim-dap-go'
+  use {
+    'mxsdev/nvim-dap-vscode-js',
+    requires = { 'mfussenegger/nvim-dap' }
+  }
+  use {
+    "microsoft/vscode-js-debug",
+    opt = true,
+    run = "npm install --legacy-peer-deps && npm run compile",
+    tag = 'v1.74.1'
+  }
   use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
   use 'theHamsta/nvim-dap-virtual-text'
 
@@ -91,6 +109,7 @@ return require('packer').startup(function()
     "NTBBloodbath/rest.nvim",
     requires = { "nvim-lua/plenary.nvim" },
   }
+  use 'Exafunction/codeium.vim'
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins

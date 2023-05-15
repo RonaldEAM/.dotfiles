@@ -45,7 +45,7 @@ nmap('<leader>m4', function() return require("harpoon.ui").nav_file(4) end)
 
 -- [[ Telescope ]]
 nmap('<leader>ff',  function() return require("telescope.builtin").find_files() end)
-nmap('<leader>fg',  function() return require("telescope.builtin").live_grep() end)
+nmap('<leader>fg',  function() return require("telescope").extensions.live_grep_args.live_grep_args() end)
 nmap('<leader>fb',  function() return require("telescope.builtin").buffers() end)
 nmap('<leader>fh',  function() return require("telescope.builtin").help_tags() end)
 nmap('<leader>tgs', function() return require("telescope.builtin").git_status() end)
@@ -53,7 +53,7 @@ nmap('<leader>ch', function() return require("telescope.builtin").command_histor
 nmap('gr', ':Telescope lsp_references<CR>')
 nmap('gd', ':Telescope lsp_definitions<CR>')
 nmap('<leader>gh', ':Telescope git_commits<CR>')
-nmap('<leader>fid', function() return require("telescope.builtin").live_grep({search_dirs = {vim.fn.input("Directory to search: ")}}) end)
+nmap('<leader>fr', function() return require('telescope.builtin').resume() end)
 
 -- [[ Debugger ]]
 nmap('<leader>dc',  function() return require("dap").continue() end)
@@ -90,3 +90,14 @@ nmap('<leader>rl', '<Plug>RestNvimLast')
 
 -- [[ Markdown ]]
 nmap('<leader>md', ':MarkdownPreviewToggle<CR>')
+
+-- [[ openingh ]]
+--
+-- for repository page
+nmap("<leader>ghr", ":OpenInGHRepo<CR>")
+-- for current file page
+nmap("<leader>ghf", ":OpenInGHFile<CR>")
+
+-- [[ Github search ]]
+
+nmap('<leader>ghs', function() return require("nvim-github-codesearch").prompt() end)

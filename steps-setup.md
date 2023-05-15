@@ -34,12 +34,6 @@ brew install --cask raycast
 brew install neovim
 ```
 
-- install tmux
-
-```bash
-brew install tmux
-```
-
 - install git
 
 ```bash
@@ -56,13 +50,11 @@ git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-${ZSH:-~/.o
 
 - install nodejs and tools
 
-```bash
-brew install volta
-volta install node
-volta install typescript
-volta install typescript-language-server
-volta install vscode-langservers-extracted
-volta install trash
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+source ~/.zshrc
+echo 'typescript\ntypescript-language-server\nvscode-langservers-extracted\neslint\nprettier\ntrash-cli\nyarn' >> $NVM_DIR/default-packages
+nvm install node
 ```
 
 - install python
@@ -94,7 +86,6 @@ stow kitty
 rm ~/.zshrc
 stow zsh
 stow nvim
-stow tmux
 ```
 
 - Configure neovim
@@ -133,12 +124,9 @@ brew install --cask font-jetbrains-mono-nerd-font
 ```
 
 - install docker/kubernetes
+  https://docs.docker.com/desktop/install/mac-install/
 
-```bash
-brew install --cask rancher
-```
-
-- install dbeaver
+- install dbeaver (optional)
 
 ```bash
 brew install --cask dbeaver-community
@@ -156,4 +144,10 @@ ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
 ```
 brew install --cask flameshot
+```
+
+- install aws
+
+```
+brew install awscli
 ```
