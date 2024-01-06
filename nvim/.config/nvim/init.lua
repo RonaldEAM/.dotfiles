@@ -1,24 +1,18 @@
 vim.g.mapleader = ' '
 
-require('opts')
-require('plugins')
-require('lsp')
-require('setup.nvim-cmp')
-require('setup.vsnip')
+require('config.options')
+require('config.keymaps')
 
--- [[ Plugins Settings ]]
-require('setup.theme')
-require('setup.lualine')
-require('setup.fidget')
-require('setup.gitsigns')
-require('setup.nvim-web-devicons')
-require('setup.nvim-tree')
-require('setup.neoscroll')
-require('setup.treesitter')
-require('setup.telescope')
-require('setup.dap')
-require('setup.blamer')
-require('setup.rest-nvim')
-require('setup.harpoon')
-
-require('keymaps')
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+require('lazy').setup('plugins')

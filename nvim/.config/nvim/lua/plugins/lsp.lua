@@ -1,11 +1,4 @@
-local lspconfig = require("lspconfig")
-local null_ls = require("null-ls")
-
 local opts = { noremap=true, silent=true }
-vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -33,30 +26,53 @@ local on_attach = function(client, bufnr)
   end
 end
 
-require("lspconfig.configs").vtsls = require("vtsls").lspconfig
+return {
+  {
+    "neovim/nvim-lspconfig",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    dependencies = {
+      "yioneko/nvim-vtsls",
+      {
+        "nvimtools/none-ls.nvim",
+        config = function()
+          local null_ls = require("null-ls")
+          null_ls.setup({
+            sources = {
+              null_ls.builtins.diagnostics.eslint_d,
+              null_ls.builtins.code_actions.eslint_d,
+              null_ls.builtins.formatting.prettierd
+            },
+            on_attach = on_attach
+          })
+        end
+      },
+      "hrsh7th/cmp-nvim-lsp",
+    },
+    config = function()
+      map('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+      map('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+      map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+      -- map('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+ 
+      local lspconfig = require("lspconfig")
+      -- require("lspconfig.configs").vtsls = require("vtsls").lspconfig
 
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches
-local servers = { 'vtsls', 'html', 'gopls' }
-local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
-for _, lsp in pairs(servers) do
-  lspconfig[lsp].setup {
-    on_attach = function(client, bufnr)
-      if lsp == 'tsserver' or lsp == 'html' then
-        client.server_capabilities.documentFormattingProvider = false
-        client.server_capabilities.documentRangeFormattingProvider = false
+      -- Use a loop to conveniently call 'setup' on multiple servers and
+      -- map buffer local keybindings when the language server attaches
+      local servers = { 'vtsls', 'html', 'gopls', 'clangd' }
+      local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+      for _, lsp in pairs(servers) do
+        lspconfig[lsp].setup {
+          on_attach = function(client, bufnr)
+            if lsp == 'vtsls' or lsp == 'html' then
+              client.server_capabilities.documentFormattingProvider = false
+              client.server_capabilities.documentRangeFormattingProvider = false
+            end
+            on_attach(client, bufnr)
+          end,
+          capabilities = capabilities
+        }
       end
-      on_attach(client, bufnr)
-    end,
-    capabilities = capabilities
-  }
-end
-
-null_ls.setup({
-  sources = {
-    null_ls.builtins.diagnostics.eslint_d,
-    null_ls.builtins.code_actions.eslint_d,
-    null_ls.builtins.formatting.prettierd,
+    end
   },
-  on_attach = on_attach,
-})
+}
